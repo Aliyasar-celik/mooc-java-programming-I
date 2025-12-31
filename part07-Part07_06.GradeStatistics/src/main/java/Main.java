@@ -6,28 +6,11 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        int totalPoints = 0;
-        int pointCount = 1;
+        GradeRegister register = new GradeRegister();
 
-        int point = Integer.valueOf(scanner.nextLine());
+        UserInterface ui = new UserInterface(scanner, register);
 
-        if (point <= 100 && point > 0) {
-            totalPoints += point;
-            pointCount += 1;
+        ui.start();
 
-        }
-
-        while (point != -1) {
-
-            point = Integer.valueOf(scanner.nextLine());
-
-            if (point <= 100 && point > 0) {
-                totalPoints += point;
-                pointCount += 1;
-
-            }
-        }
-
-        System.out.println("Point average (all): " + totalPoints / (float) (pointCount - 1));
     }
 }

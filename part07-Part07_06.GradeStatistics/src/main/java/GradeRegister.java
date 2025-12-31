@@ -1,28 +1,72 @@
+import java.util.ArrayList;
+
 public class GradeRegister {
 
-    int totalPoints = 0;
-    int pointCount = 1;
+    private int pointTotals = 0;
+    private int passingPointTotals;
+    private int pointCount = 0;
+    private int passingPointCount;
+    private ArrayList<Integer> pointsList;
+    private int[] gradeList = new int [6];
 
-    int point = Integer.valueOf(scanner.nextLine());
-
-    if((point<=100)&&(point>0))
-    {
-        totalPoints += point;
-        pointCount += 1;
-
+    public int[] getGradeList() {
+        return gradeList;
     }
 
-    while(point!=-1)
-    {
+    public GradeRegister() {
+        pointsList = new ArrayList<Integer>();
+    }
 
-        point = Integer.valueOf(scanner.nextLine());
+    public float averageOfPoints() {
 
-        if (point <= 100 && point > 0) {
-            totalPoints += point;
-            pointCount += 1;
+        // added if the point total needs to be calculated again.
+        // for (int point : pointsList) {
+        //     this.pointTotals += point;
+        // }
+        return (this.pointCount == 0) ? 0.0f : (float) this.pointTotals / this.pointCount;
+    }
 
+    public void addPoint(int point) {
+
+        this.pointTotals += point;
+        this.pointCount += 1;
+        if (point >= 50) {
+            this.passingPointTotals += point;
+            this.passingPointCount += 1;
+
+            if (point < 60){
+                this.gradeList[1] += 1;
+            }else if (point < 70){
+                this.gradeList[2] += 1;
+            }else if (point < 80){
+                this.gradeList[3] += 1;
+            }else if (point < 90){
+                this.gradeList[4] += 1; 
+            }else{
+                this.gradeList[5] += 1;
+            }
+        }else{
+            this.gradeList[0] += 1;
         }
+
     }
 
-    System.out.println("Point average (all): "+totalPoints/(float)(pointCount-1));
-}}
+    public float averageOfPassingPoints() {
+        // added if the point total needs to be calculated again.
+        // for (int point : pointsList) {
+        //     if (point >= 50) {
+        //         this.passingPointCount += point;
+        //     }
+        // }
+        return (this.passingPointCount == 0) ? 0.0f : (float) this.passingPointTotals / this.passingPointCount;
+
+    }
+
+    public float passPercentage(){
+
+        return (this.passingPointCount == 0) ? 0.0f : 100*((float)this.passingPointCount/this.pointCount);
+
+        
+    }
+
+}
