@@ -16,45 +16,59 @@ public class UserInterface {
         System.out.println("File to read: ");
         String fileToRead = scanner.nextLine();
         this.readRecipeFile(fileToRead);
-        
-        System.out.println(
-        );
-        
+
+        System.out.println("Commands:");
+        System.out.println("list - lists the recipes");
+        System.out.println("stop - stops the program");
+        System.out.println();
+        System.out.print("Enter command: ");
+        String command = scanner.nextLine();
+        while(!command.equalsIgnoreCase("stop")){
+           this.processCommand(command);
+        }
+
         
 
-        System.out.println(recipeRegister);
+        
     }
 
     private void readRecipeFile(String fileToRead) {
 
         try (Scanner fileScanner = new Scanner(Paths.get(fileToRead))) {
-            Recipe recipe = new Recipe();
-            int lineCount = 0;
-            // we read all the lines of the file
+            Recipe recipe = null;
+            int sectionLine = 0;
+
+            // Format:
+            // name
+            // cooking time
+            // ingredient(s)
+            // (blank line separates recipes)
             while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine();
+                String line = fileScanner.nextLine().trim();
                 if (line.isBlank()) {
-                    this.recipeRegister.addRecipe(recipe);
+                    if (recipe != null) {
+                        this.recipeRegister.addRecipe(recipe);
+                        recipe = null;
+                    }
+                    sectionLine = 0;
+                    continue;
+
+                }
+
+                sectionLine++;
+                if (sectionLine == 1) {
                     recipe = new Recipe();
-                    lineCount = 0;
-                } else {
-                    lineCount += 1;
-                }
-
-                if (lineCount == 1) {
-
                     recipe.setName(line);
-
-                } else if (lineCount == 2) {
-
-                    int cookingTime = Integer.valueOf(line);
+                } else if (sectionLine == 2) {
+                    int cookingTime = Integer.parseInt(line);
                     recipe.setCookingTime(cookingTime);
-
                 } else {
-
                     recipe.addIngredient(line);
-
                 }
+            }
+
+            if (recipe != null) {
+                this.recipeRegister.addRecipe(recipe);
             }
 
         } catch (Exception readRecipeFilException) {
@@ -62,6 +76,11 @@ public class UserInterface {
             System.out.println("Couldn' t read the recipe file.");
             System.out.println("Error: " + readRecipeFilException.getMessage());
         }
+
+    }
+
+    private void processCommand(String command){
+
 
     }
 
