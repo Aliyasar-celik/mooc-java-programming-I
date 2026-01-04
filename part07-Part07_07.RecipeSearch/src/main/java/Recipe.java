@@ -15,7 +15,7 @@ public class Recipe {
 
     @Override
     public String toString() {
-        return "Recipe [name=" + name + ", cookingTime=" + cookingTime + ", ingredients=" + ingredients + "]";
+        return this.getName() + ", cooking time: " + this.getCookingTime();
     }
 
     public void addIngredient(String ingredient) {
